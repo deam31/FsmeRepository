@@ -1,0 +1,192 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>deam.fsme</groupId>
+	<artifactId>FsmeRespository</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+	<name>FsmeRespository</name>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<springframework.version>4.3.5.RELEASE</springframework.version>
+		<hibernate.version>5.2.6.Final</hibernate.version>
+		<mysql.driver.version>5.1.9</mysql.driver.version>
+	</properties>
+
+	<dependencies>
+
+		<!-- Spring framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<!-- Database driver -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.driver.version}</version>
+		</dependency>
+	</dependencies>
+
+
+
+	<repositories>
+		<repository>
+			<id>uk.maven.org</id>
+			<url>http://uk.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>JBoss repository</id>
+			<url>http://repository.jboss.com/maven2/</url>
+		</repository>
+		<repository>
+			<id>maven2</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+		
+		<pluginRepository>
+			<id>maven2</id>
+			<name>JBoss repository</name>
+			<url>http://repository.jboss.com/maven2/</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>		
+	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution> <!--mvn antrun:run@hbm2java -->
+						<id>hbm2java</id>
+						<phase>none</phase>
+						<configuration>
+							<target>
+								<echo message="Start generating entities .." />
+								<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
+								<hibernatetool>
+									<jdbcconfiguration revengfile="resources/hibernate.reveng.xml"
+										packagename="deam.fsme.repository.model" detectmanytomany="true"
+										configurationfile="resources/hibernate.cfg.xml" />
+									<hbm2java destdir="src/main/java" jdk5="true" ejb3="true" />
+								</hibernatetool>
+								<echo message="End generating entities" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-core</artifactId>
+						<version>${hibernate.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-entitymanager</artifactId>
+						<version>${hibernate.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate.common</groupId>
+						<artifactId>hibernate-commons-annotations</artifactId>
+						<version>3.3.0.ga</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate.javax.persistence</groupId>
+						<artifactId>hibernate-jpa-2.1-api</artifactId>
+						<version>1.0.0.Final</version>
+					</dependency>
+					<dependency>
+						<groupId>javax.transaction</groupId>
+						<artifactId>jta</artifactId>
+						<version>1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>freemarker</groupId>
+						<artifactId>freemarker</artifactId>
+						<version>2.3.8</version>
+					</dependency>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql.driver.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+						<version>1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+						<version>3.2.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-tools</artifactId>
+						<version>4.3.2.Final</version>
+						<exclusions>
+							<exclusion>
+								<groupId>*</groupId>
+								<artifactId>*</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+       
+		</plugins>
+	</build>
+</project>
